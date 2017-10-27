@@ -30,21 +30,21 @@ router.post('/register', function (req, res, next) {
 
 
 // update a user in the db
-router.put('/user/:id', function (req, res, next) {  // : change id item
+router.put('/virement/:id', function (req, res, next) {  // : change id item
     Virement.findByIdAndUpdate({_id: req.params.id}, req.body).then(function () {  // update user selon son id
 
         // trouver apres method=findByIdAndUpdate, rechercher a nouveau user selon son id
-        Virement.findOne({_id: req.params.id}).then(function (user) {
-            res.send(user);
+        Virement.findOne({_id: req.params.id}).then(function (virement) {
+            res.send(virement);
         });
     });
 });
 
 
 // delete a user from the db
-router.delete('/user/:id', function (req, res, next) { // : change id item
-    Virement.findByIdAndRemove({_id: req.params.id}).then(function (user) {  // supprime user selon son id
-        res.send(user);
+router.delete('/virement/:id', function (req, res, next) { // : change id item
+    Virement.findByIdAndRemove({_id: req.params.id}).then(function (virement) {  // supprime user selon son id
+        res.send(virement);
     });
 });
 
