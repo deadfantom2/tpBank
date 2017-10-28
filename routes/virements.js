@@ -12,10 +12,12 @@ router.get('/register', function (req, res) {
 
 // add a new user to the db
 router.post('/register', function (req, res, next) {
-    console.log(req.body);
-    var virement = new Virement();
+        console.log(req.body);
 
-        virement.userId = req.user._id;
+        //virement.userId = req.user._id;
+        var virement = new Virement();
+
+        virement.userId = req.body.userId;
         virement.intitule = req.body.intitule;
         virement.somme = req.body.somme;
         virement.description = req.body.description;
@@ -23,6 +25,7 @@ router.post('/register', function (req, res, next) {
         virement.save();
 
 });
+
 
 
 

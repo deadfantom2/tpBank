@@ -13,6 +13,7 @@ router.get('/register', function (req, res) {
 // add a new user to the db
 router.post('/register', function (req, res, next) {
     console.log(req.body);
+
     var user = new User();
 
         user.nom = req.body.nom;
@@ -21,7 +22,6 @@ router.post('/register', function (req, res, next) {
         user.username = req.body.username;
         user.password = req.body.password;
         user.save();
-
 });
 
 
@@ -39,6 +39,7 @@ router.put('/user/:id', function (req, res, next) {  // : change id item
         });
     });
 });
+
 
 
 // delete a user from the db
