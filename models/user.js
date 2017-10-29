@@ -4,10 +4,10 @@ var bcrypt      = require('bcrypt');
 
 // user Schema
 var UserSchema = mongoose.Schema({
-    nom:       { type: String  },
-    prenom:    { type: String  },
+    nom:       { type: String },
+    prenom:    { type: String},
     email:     { type: String, required: true },
-    username:  { type: String },
+    username:  { type: String},
     password:  { type: String, required: true }
 });
 
@@ -33,6 +33,15 @@ UserSchema.pre('save', function (next) {
     }
 });
 
+// Create method to compare password input to password saved in database
+UserSchema.methods.comparePassword = function(pw, cb) {
+    bcrypt.compare(pw, this.password, function(err, isMatch) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, isMatch);
+    });
+};
 
 var User = mongoose.model('User', UserSchema);
 
