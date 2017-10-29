@@ -1,12 +1,13 @@
 var express     = require('express');               // ExperssJS Framework
 var router      = express.Router();                 // var global route
+var passport    = require('passport');
 
 var Virement    = require('../models/virement');    // import data models virment
 var User        = require('../models/user');        // import data models user
 
 
 // Afficher la page des virements
-router.get('/virements', function (req, res) {
+router.get('/virements', passport.authenticate('jwt', { session: false }), function(req, res) {
 
     Virement.find({}, function(err, virement){       // trouver totues mes reservations
         if(err){
@@ -19,7 +20,7 @@ router.get('/virements', function (req, res) {
 });
 
 // Faire le virement
-router.post('/virement', function (req, res) {
+router.post('/virement', passport.authenticate('jwt', { session: false }), function(req, res) {
         console.log(req.body);
 
         var virement = new Virement();
@@ -33,7 +34,7 @@ router.post('/virement', function (req, res) {
 });
 
 // Modifier le virement
-router.put('/virement/:id', function (req, res) {
+router.put('/virement/:id', passport.authenticate('jwt', { session: false }), function(req, res) {
     Virement.findByIdAndUpdate({_id: req.params.id}, req.body).then(function () {       // mettre à jour le virement selon son id
 
         // afficher le virement après la requete, finir la requete
@@ -44,7 +45,7 @@ router.put('/virement/:id', function (req, res) {
 });
 
 // Annuller le virement
-router.delete('/virement/:id', function (req, res) { // : change id item
+router.delete('/virement/:id', passport.authenticate('jwt', { session: false }), function(req, res) {
     Virement.findByIdAndRemove({_id: req.params.id}).then(function (virement) {  // supprime user selon son id
         res.send(virement);
     });
