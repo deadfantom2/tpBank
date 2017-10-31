@@ -21,11 +21,10 @@ router.get('/virements', passport.authenticate('jwt', { session: false }), funct
 
 // Faire le virement
 router.post('/virement', passport.authenticate('jwt', { session: false }), function(req, res) {
-        console.log(req.body);
+
 
         var virement = new Virement();
-            //virement.userId = req.user._id;
-            virement.userId = req.body.userId;
+            virement.userId = req.user._id;
             virement.intitule = req.body.intitule;
             virement.somme = req.body.somme;
             virement.description = req.body.description;
