@@ -8,7 +8,7 @@ var VirementSchema = mongoose.Schema({
     somme:       { type: String, required: true },
     description: { type: String, required: true},
     date:        { type: String, required: true }
-});
+},  { timestamps: true });
 
 var Virement = mongoose.model('Virement', VirementSchema);
 
