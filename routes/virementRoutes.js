@@ -32,7 +32,7 @@ router.get('/virements', passport.authenticate('jwt', { session: false }), funct
 
     Virement.find({}, function(err, virement){       // trouver totues mes reservations
         if(err){
-            res.status(0).json(err);
+            res.status(500).json(err);
         }else{
             res.status(200).json(virement);
         }
@@ -64,6 +64,8 @@ router.post('/virement', passport.authenticate('jwt', { session: false }), funct
             setTimeout(myFunc, 1000, 'funky');
 */
             virement.save();
+
+            res.status(200).send({ success: true});
 });
 
 
