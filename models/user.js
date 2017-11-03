@@ -20,7 +20,7 @@ UserSchema.pre('save', function (next) {
             if (err) {
                 return next(err);
             }
-            bcrypt.hash(user.password, salt, function(err, hash) {
+            bcrypt.hash(user.password, salt, null,  function(err, hash) {
                 if (err) {
                     return next(err);
                 }
@@ -38,8 +38,9 @@ UserSchema.methods.comparePassword = function(pw, cb) {
     bcrypt.compare(pw, this.password, function(err, isMatch) {
         if (err) {
             return cb(err);
+        }else{
+            cb(null, isMatch);
         }
-        cb(null, isMatch);
     });
 };
 

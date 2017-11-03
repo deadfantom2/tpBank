@@ -12,16 +12,14 @@ var User        = require('../models/user');        // import data models user
 // Filtre future
 router.get('/filtre', passport.authenticate('jwt', { session: false }), function(req, res) {
 
-
     Virement.find({}, function(err, virement){       // trouver totues mes reservations
         if(err){
             res.status(0).json(err);
+            res.status(500).json(err);
         }else{
             res.status(200).json(virement);
         }
     }).sort({"date": 1});              // --- 1 for asc and -1 for desc
-
-
 
 });
 
@@ -30,7 +28,7 @@ router.get('/filtre', passport.authenticate('jwt', { session: false }), function
 // Afficher la page des virements
 router.get('/virements', passport.authenticate('jwt', { session: false }), function(req, res) {
 
-    Virement.find({}, function(err, virement){       // trouver totues mes reservations
+    Virement.find({userId : req.user._id}, function(err, virement){       // trouver totues mes reservations
         if(err){
             res.status(0).json(err);
         }else{
@@ -64,6 +62,7 @@ router.post('/virement', passport.authenticate('jwt', { session: false }), funct
             setTimeout(myFunc, 1000, 'funky');
 */
             virement.save();
+            res.status(200).send({ success: true});
 });
 
 

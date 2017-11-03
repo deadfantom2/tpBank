@@ -6,13 +6,14 @@ html
         script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js')
     body
 
-    #chat
-        h2 Chat
-        #chat-window
-            #output
-            #feedback
-        input#handle(type='text', placeholder=user.name)
-        input#message(type='text', placeholder='Message')
-        button#send Send
+    form(method='POST',action='/chat')
+        #chat
+            h2 Chat
+            #chat-window
+                #output
+                #feedback
+            input#handle(type='text', name='name', placeholder=user.name)
+            input#message(type='text', name='messge', placeholder='Message')
+            button#send Send
 
     script(src='/chat.js')
