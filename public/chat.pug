@@ -12,8 +12,8 @@ html
             #chat-window
                 #output
                 #feedback
-            input#handle(type='text', name='name', placeholder=user.name)
-            input#message(type='text', name='messge', placeholder='Message')
+            input#handle(type='hidden', name=user.nom)
+            input#message(type='text', name='message', placeholder='Message')
             button#send Send
 
-    script(src='/chat.js')
+        script(src='/chat.js')
