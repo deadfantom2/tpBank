@@ -13,6 +13,8 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.15.0",
     "connect-mongo": "^2.0.0",
+    "cors": "^2.8.4",
+    "excel-export": "^0.5.1",
     "express": "^4.13.4",
     "express-jwt": "^5.3.0",
     "jsonwebtoken": "^5.7.0",
@@ -21,6 +23,7 @@
     "cors": "^2.8.1",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0",
     "pug": "^2.0.0-rc.3",
     "socket.io": "^2.0.4"
   }

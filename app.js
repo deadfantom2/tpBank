@@ -10,6 +10,7 @@ var passport            = require('passport');
 var expressJWT          = require('express-jwt');
 var cors                = require('cors');
 
+
 mongoose.connect(config.database);
 var db                  = mongoose.connection;
 var MongoStore = require('connect-mongo');
@@ -24,6 +25,7 @@ var app = express();
 // Declaration Models
 var User     = require('./models/user');
 var Virement = require('./models/virement');
+var Chat     = require('./models/chat');
 
 app.use(function(request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
@@ -53,8 +55,6 @@ app.use('/',   require('./routes/chatRoutes'));
 app.set('views',path.join(__dirname, 'public'));
 app.set('view engine','pug');
 app.use(express.static(path.join(__dirname, 'public'))); // Declaration du dossier public
-
-
 
 
 

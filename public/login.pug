@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        title Knowledgebase
+        link(rel="stylesheet" href="/style.css")
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js')
+    body
+
+    h1 Login
+    form(method='POST',action='/login')
+        #form-group
+            label Username:
+            input.form-control(name='email',type='text')
+        #form-group
+            label Password:
+            input.form-control(name='password',type='password')
+        br
+        input.btn.btn-primary(type='submit',value='Submit')

@@ -14,6 +14,8 @@ router.get('/dashboard', passport.authenticate('jwt', { session: false }), funct
 });
 
 
+
+
 // Création du compte Utilisateur
 router.post('/register', function(req, res) {
     if(!req.body.email || !req.body.password) {
@@ -37,6 +39,10 @@ router.post('/register', function(req, res) {
     }
 });
 
+
+router.get('/login', function (req, res) {
+    res.render('./login');
+});
 // Route pour s'authentifier
 router.post('/login', function(req, res) {
     User.findOne({ email: req.body.email }, function(err, user) {
@@ -49,14 +55,17 @@ router.post('/login', function(req, res) {
             user.comparePassword(req.body.password, function(err, isMatch) {
                 if (isMatch && !err) {
                     // Create token if the password matched and no error was thrown
-                    var token = jwt.sign(user, config.secret, {
-                        expiresIn: 9000 // 15 minutes
-                    });
+                    var token = jwt.sign(user, config.secret, {expiresIn: 9000 }); // 15 minutes
+
+
                     res.json({ success: true, token: 'JWT ' + token });
+
                 } else {
                     res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
                 }
+
             });
+
         }
     });
 });
