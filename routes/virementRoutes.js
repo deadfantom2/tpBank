@@ -29,14 +29,13 @@ router.get('/filtre', passport.authenticate('jwt', { session: false }), function
 
 // Afficher la page des virements
 router.get('/virements', passport.authenticate('jwt', { session: false }), function(req, res) {
-
-    Virement.find({userId : req.user._id}, function(err, virement){       // trouver totues mes reservations
+    Virement.find({userId : req.user.id}, function(err, virement){       // trouver toutes mes reservations
         if(err){
             res.status(500).json(err);
         }else{
             res.status(200).json(virement);
         }
-    });
+    }).sort({date: -1}); 
 
 });
 

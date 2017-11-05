@@ -63,7 +63,8 @@ router.post('/login', function(req, res) {
 
 // log out
 router.get('/logout', function(req, res){
-    req.logout();
+    req.logOut();
+    res.status(200).send({ success: true});
 });
 
 // Utilisateur met à jour son profile
