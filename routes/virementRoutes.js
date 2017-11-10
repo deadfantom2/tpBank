@@ -14,7 +14,6 @@ router.get('/filtre', passport.authenticate('jwt', { session: false }), function
 
     Virement.find({}, function(err, virement){       // trouver totues mes reservations
         if(err){
-            res.status(0).json(err);
             res.status(500).json(err);
         }else{
             res.status(200).json(virement);
@@ -29,9 +28,9 @@ router.get('/filtre', passport.authenticate('jwt', { session: false }), function
 router.get('/virements', passport.authenticate('jwt', { session: false }), function(req, res) {
     Virement.find({userId : req.user.id}, function(err, virement){       // trouver toutes mes reservations
         if(err){
-            res.status(0).json(err);
+            res.status(500).send(err);
         }else{
-            res.status(200).json(virement);
+            res.status(200).send(virement);
         }
     }).sort({date: -1}); 
 
@@ -41,12 +40,41 @@ router.get('/virements', passport.authenticate('jwt', { session: false }), funct
 router.post('/virement', passport.authenticate('jwt', { session: false }), function(req, res) {
 
 
-        var virement = new Virement();
-            virement.userId = req.user._id;
-            virement.intitule = req.body.intitule;
-            virement.somme = req.body.somme;
-            virement.description = req.body.description;
-            virement.date = req.body.date;
+    var prelevement = new Virement();
+    prelevement.userId = req.user._id;
+    prelevement.intitule = req.body.intitule;
+    prelevement.somme = 0 - Number(req.body.somme);
+    prelevement.description = req.body.description;
+    prelevement.date = req.body.date;
+    prelevement.destinataire = req.body.destinataire;
+
+    var virement = new Virement();
+    virement.userId = req.body.destinataire;
+    virement.intitule = req.body.intitule;
+    virement.somme = req.body.somme;
+    virement.description = req.body.description;
+    virement.date = req.body.date;
+    virement.crediteur = req.user._id;
+
+    prelevement.save(function(err) {
+        if (err) {
+            console.log("err" + JSON.stringify(err));
+            res.status(500).send({ success: false, message: "Imposible d'effectuer le virement"});
+        }
+        else{
+
+            virement.save(function(err) {
+                console.log("enter");
+                if (err) {
+                    res.status(500).send({ success: false, message: "Imposible d'effectuer le virement"});
+                }
+                else{
+                    res.status(201).send({ success: true });
+                }
+            });
+
+        }
+    });
 
             /*
             $timeout(function () {  // angular method timeout 2ms
@@ -60,8 +88,7 @@ router.post('/virement', passport.authenticate('jwt', { session: false }), funct
             }
             setTimeout(myFunc, 1000, 'funky');
 */
-            virement.save();
-            res.status(200).send({ success: true});
+
 });
 
 

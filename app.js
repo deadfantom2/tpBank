@@ -25,7 +25,6 @@ var app = express();
 // Declaration Models
 var User     = require('./models/user');
 var Virement = require('./models/virement');
-var Chat     = require('./models/chat');
 
 app.use(function(request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
@@ -47,7 +46,6 @@ app.use(cors());
 /*------------Declaration Routes Avec Path definit une fois-------------------*/
 app.use('/',   require('./routes/userRoutes'));
 app.use('/',   require('./routes/virementRoutes'));
-app.use('/',   require('./routes/chatRoutes'));
 
 
 /* *************************************************Chat************************************************************* */
@@ -66,13 +64,29 @@ var server = app.listen(3000, function(){
 // socket setup
 var io =  socket(server); // setup on notre serveur 3000
 
+// io.on('connection', function (socket) {
+//     //listen chat message
+//     socket.on('chat', function (data) {
+//         io.sockets.emit('chat', data);
+//     });
+//     socket.on('typing', function (data) {
+//         socket.broadcast.emit('typing', data);
+//     });
+//
+// }); //connection from browser
+//Test socket
 io.on('connection', function (socket) {
-    //listen chat message
-    socket.on('chat', function (data) {
-        io.sockets.emit('chat', data);
-    });
-    socket.on('typing', function (data) {
-        socket.broadcast.emit('typing', data);
+    socket.on('disconnect', function(){
+        io.emit('users-changed', {user: socket.nickname, event: 'left'});
     });
 
-}); //connection from browser
+    socket.on('set-nickname', function (nickname) {
+        socket.nickname = nickname;
+        io.emit('users-changed', {user: nickname, event: 'joined'});
+    });
+
+    socket.on('add-message', function (message) {
+        io.emit('message', {text: message.text, from: socket.nickname, created: new Date()});
+    });
+});
+

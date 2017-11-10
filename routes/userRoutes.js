@@ -14,28 +14,56 @@ router.get('/dashboard', passport.authenticate('jwt', { session: false }), funct
 });
 
 
+//Pour la liste déroulante des virements
+router.get('/users', passport.authenticate('jwt', { session: false }), function(req, res) {
 
+    User.find({_id: {'$ne':req.user._id }}, '_id username', function (err, users) {
+        if (err){
+            res.status(500).send({ success: false, message: JSON.stringify(err) });
+        }
+        else{
+            res.status(200).send(users);
+        }
+    }).sort({username: 1});
+
+
+});
 
 // Création du compte Utilisateur
 router.post('/register', function(req, res) {
+
     if(!req.body.email || !req.body.password) {
-        res.json({ success: false, message: 'Please enter email and password.' });
+        res.status(400).send({ success: false, message: 'Please enter email and password.' });
     } else {
-        var newUser = new User({
-            nom: req.body.nom,
-            prenom: req.body.prenom,
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password
+        var newUser = new User();
+        newUser.nom = req.body.nom;
+        newUser.prenom = req.body.prenom;
+        newUser.username = req.body.username;
+        newUser.email = req.body.email;
+        newUser.password = req.body.password;
+
+        console.log(newUser);
+        // Attempt to save the user
+        // newUser.save();
+
+        // newUser.save(function(err){
+        //     console.log('test');
+        // });
+        newUser.save(function(err) {
+            console.log("enter");
+            if (err) {
+                console.log("err" + JSON.stringify(err));
+                res.status(400).send({ success: false, message: 'Email already exists'});
+            }
+            else{
+                console.log("no err");
+                res.status(200).send({ success: true, message: 'User created!' });
+            }
+
+
         });
 
-        // Attempt to save the user
-        newUser.save(function(err) {
-            if (err) {
-                return res.json({ success: false, message: 'Email already exists'});
-            }
-            res.json({ success: true, message: 'User created!' });
-        });
+        //res.status(200).send({ success: true, message: 'User created!' });
     }
 });
 
